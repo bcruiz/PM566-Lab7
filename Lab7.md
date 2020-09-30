@@ -5,6 +5,7 @@ Brandyn Ruiz
 
 ``` r
 library(stringr)
+library(httr)
 ```
 
 # Learning goals
@@ -44,8 +45,10 @@ counts <- xml2::xml_find_first(website, "/html/body/main/div[9]/div[2]/div[2]/di
 counts <- as.character(counts)
 
 # Extracting the data using regex
-stringr::str_extract(counts, "[0-9]+[:punct:]+[0-9]+")
+stringr::str_extract(counts, "[0-9,]+")
 ```
+
+    ## [1] "33,814"
 
 Don’t forget to commit your work\!
 
@@ -68,11 +71,9 @@ Use the function `httr::GET()` to make the following query:
 <!-- end list -->
 
 ``` r
-library(httr)
 query_ids <- GET(
-  url   = "BASELINE URL",
-  query = list("QUERY PARAMETERS")
-)
+  url   = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+  query = list(db = 'pubmed', term = 'covid hawaii', retmax = 1000))
 
 # Extracting the content of the response of GET
 ids <- httr::content(query_ids)

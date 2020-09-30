@@ -3,13 +3,11 @@ title: "Lab 07 - Web scraping and Regular Expressions"
 author: "Brandyn Ruiz"
 date: "9/30/2020"
 output: github_document
-editor_options: 
-  chunk_output_type: console
 ---
 
-```{r}
+```{r, message=FALSE, echo=TRUE, warning=FALSE}
 library(stringr)
-
+library(httr)
 ```
 
 # Learning goals
@@ -36,7 +34,7 @@ https://pubmed.ncbi.nlm.nih.gov/?term=sars-cov-2
 
 Complete the lines of code:
 
-```{r counter-pubmed, eval=FALSE}
+```{r counter-pubmed}
 # Downloading the website
 website <- xml2::read_html("https://pubmed.ncbi.nlm.nih.gov/?term=sars-cov-2")
 
@@ -47,7 +45,7 @@ counts <- xml2::xml_find_first(website, "/html/body/main/div[9]/div[2]/div[2]/di
 counts <- as.character(counts)
 
 # Extracting the data using regex
-stringr::str_extract(counts, "[0-9]+[:punct:]+[0-9]+")
+stringr::str_extract(counts, "[0-9,]+")
 ```
 
 Don't forget to commit your work!
@@ -68,12 +66,10 @@ Use the function `httr::GET()` to make the following query:
     - retmax: 1000
 
 
-```{r papers-covid-hawaii, eval=FALSE}
-library(httr)
+```{r papers-covid-hawaii}
 query_ids <- GET(
-  url   = "BASELINE URL",
-  query = list("QUERY PARAMETERS")
-)
+  url   = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/esearch.fcgi",
+  query = list(db = 'pubmed', term = 'covid hawaii', retmax = 1000))
 
 # Extracting the content of the response of GET
 ids <- httr::content(query_ids)
