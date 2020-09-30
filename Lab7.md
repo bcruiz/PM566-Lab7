@@ -96,12 +96,96 @@ information. Fill out the following lines of code:
 ``` r
 # Turn the result into a character vector
 ids <- as.character(ids)
+cat(ids)
+```
 
+    ## <?xml version="1.0" encoding="UTF-8"?>
+    ## <!DOCTYPE eSearchResult PUBLIC "-//NLM//DTD esearch 20060628//EN" "https://eutils.ncbi.nlm.nih.gov/eutils/dtd/20060628/esearch.dtd">
+    ## <eSearchResult>
+    ##   <Count>40</Count>
+    ##   <RetMax>40</RetMax>
+    ##   <RetStart>0</RetStart>
+    ##   <IdList>
+    ##     <Id>32984015</Id>
+    ##     <Id>32969950</Id>
+    ##     <Id>32921878</Id>
+    ##     <Id>32914097</Id>
+    ##     <Id>32914093</Id>
+    ##     <Id>32912595</Id>
+    ##     <Id>32907823</Id>
+    ##     <Id>32907673</Id>
+    ##     <Id>32888905</Id>
+    ##     <Id>32881116</Id>
+    ##     <Id>32837709</Id>
+    ##     <Id>32763956</Id>
+    ##     <Id>32763350</Id>
+    ##     <Id>32745072</Id>
+    ##     <Id>32742897</Id>
+    ##     <Id>32692706</Id>
+    ##     <Id>32690354</Id>
+    ##     <Id>32680824</Id>
+    ##     <Id>32666058</Id>
+    ##     <Id>32649272</Id>
+    ##     <Id>32596689</Id>
+    ##     <Id>32592394</Id>
+    ##     <Id>32584245</Id>
+    ##     <Id>32501143</Id>
+    ##     <Id>32486844</Id>
+    ##     <Id>32462545</Id>
+    ##     <Id>32432219</Id>
+    ##     <Id>32432218</Id>
+    ##     <Id>32432217</Id>
+    ##     <Id>32427288</Id>
+    ##     <Id>32420720</Id>
+    ##     <Id>32386898</Id>
+    ##     <Id>32371624</Id>
+    ##     <Id>32371551</Id>
+    ##     <Id>32361738</Id>
+    ##     <Id>32326959</Id>
+    ##     <Id>32323016</Id>
+    ##     <Id>32314954</Id>
+    ##     <Id>32300051</Id>
+    ##     <Id>32259247</Id>
+    ##   </IdList>
+    ##   <TranslationSet>
+    ##     <Translation>
+    ##       <From>hawaii</From>
+    ##       <To>"hawaii"[MeSH Terms] OR "hawaii"[All Fields]</To>
+    ##     </Translation>
+    ##   </TranslationSet>
+    ##   <TranslationStack>
+    ##     <TermSet>
+    ##       <Term>covid[All Fields]</Term>
+    ##       <Field>All Fields</Field>
+    ##       <Count>55452</Count>
+    ##       <Explode>N</Explode>
+    ##     </TermSet>
+    ##     <TermSet>
+    ##       <Term>"hawaii"[MeSH Terms]</Term>
+    ##       <Field>MeSH Terms</Field>
+    ##       <Count>7799</Count>
+    ##       <Explode>Y</Explode>
+    ##     </TermSet>
+    ##     <TermSet>
+    ##       <Term>"hawaii"[All Fields]</Term>
+    ##       <Field>All Fields</Field>
+    ##       <Count>27601</Count>
+    ##       <Explode>N</Explode>
+    ##     </TermSet>
+    ##     <OP>OR</OP>
+    ##     <OP>GROUP</OP>
+    ##     <OP>AND</OP>
+    ##     <OP>GROUP</OP>
+    ##   </TranslationStack>
+    ##   <QueryTranslation>covid[All Fields] AND ("hawaii"[MeSH Terms] OR "hawaii"[All Fields])</QueryTranslation>
+    ## </eSearchResult>
+
+``` r
 # Find all the ids 
-ids <- stringr::str_extract_all(ids, "PATTERN")[[1]]
+ids <- stringr::str_extract_all(ids, "<Id>[0-9]+</Id>")[[1]]
 
 # Remove all the leading and trailing <Id> </Id>. Make use of "|"
-ids <- stringr::str_remove_all(ids, "PATTERN")
+ids <- stringr::str_remove_all(ids, "<Id>|</Id>")
 ```
 
 With the ids in hand, we can now try to get the abstracts of the papers.
@@ -126,11 +210,9 @@ behavior, you would need to do the following `I("123,456")`.
 
 ``` r
 publications <- GET(
-  url   = "BASELINE URL HERE",
-  query = list(
-    "PARAMETERS OF THE QUERY"
-    )
-)
+  url   = "https://eutils.ncbi.nlm.nih.gov/entrez/eutils/efetch.fcgi",
+  query = list(db = 'pubmed', id = paste(ids, collapse = ','),
+               retmax = 1000, rettype = 'abstact'))
 
 # Turning the output into character vector
 publications <- httr::content(publications)
