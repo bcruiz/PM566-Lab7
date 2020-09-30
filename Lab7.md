@@ -233,13 +233,69 @@ Using the function `stringr::str_extract_all()` applied on
 Write a regular expression that captures all such instances
 
 ``` r
-institution <- str_extract_all(
-  publications_txt,
-  "[YOUR REGULAR EXPRESSION HERE]"
-  ) 
+institution <- str_extract_all(publications_txt, "University of\\s[[:alpha:]]+|[[:alpha:]]+\\sInstitute of\\s[[:alpha:]]+\\s[[:alpha:]]+")
+
 institution <- unlist(institution)
 table(institution)
 ```
+
+    ## institution
+    ##    Australian Institute of Tropical Health 
+    ##                                          9 
+    ## Massachusetts Institute of Technology Koch 
+    ##                                          1 
+    ## National Institute of Environmental Health 
+    ##                                          3 
+    ##   Prophylactic Institute of Southern Italy 
+    ##                                          2 
+    ##                      University of Arizona 
+    ##                                          2 
+    ##                   University of California 
+    ##                                          6 
+    ##                      University of Chicago 
+    ##                                          1 
+    ##                     University of Colorado 
+    ##                                          1 
+    ##                        University of Hawai 
+    ##                                         20 
+    ##                       University of Hawaii 
+    ##                                         38 
+    ##                       University of Health 
+    ##                                          1 
+    ##                     University of Illinois 
+    ##                                          1 
+    ##                         University of Iowa 
+    ##                                          4 
+    ##                     University of Lausanne 
+    ##                                          1 
+    ##                   University of Louisville 
+    ##                                          1 
+    ##                     University of Nebraska 
+    ##                                          5 
+    ##                       University of Nevada 
+    ##                                          1 
+    ##                          University of New 
+    ##                                          2 
+    ##                 University of Pennsylvania 
+    ##                                         18 
+    ##                   University of Pittsburgh 
+    ##                                          5 
+    ##                      University of Science 
+    ##                                         14 
+    ##                        University of South 
+    ##                                          1 
+    ##                     University of Southern 
+    ##                                          1 
+    ##                       University of Sydney 
+    ##                                          1 
+    ##                        University of Texas 
+    ##                                          5 
+    ##                          University of the 
+    ##                                          1 
+    ##                         University of Utah 
+    ##                                          2 
+    ##                    University of Wisconsin 
+    ##                                          3
 
 Repeat the exercise and this time focus on schools and departments in
 the form of
@@ -251,11 +307,61 @@ And tabulate the results
 
 ``` r
 schools_and_deps <- str_extract_all(
-  abstracts_txt,
-  "[YOUR REGULAR EXPRESSION HERE]"
-  )
+  publications_txt,
+  "School of\\s[[:alpha:]]+|Department of\\s[[:alpha:]]+")
+
 table(schools_and_deps)
 ```
+
+    ## schools_and_deps
+    ## Department of Anesthesiology        Department of Biology 
+    ##                            6                            3 
+    ##     Department of Cardiology           Department of Cell 
+    ##                            1                            4 
+    ##       Department of Clinical  Department of Communication 
+    ##                            2                            1 
+    ##  Department of Computational       Department of Critical 
+    ##                            1                            2 
+    ##        Department of Defense  Department of Environmental 
+    ##                            1                            1 
+    ##   Department of Epidemiology   Department of Experimental 
+    ##                            9                            1 
+    ##         Department of Family        Department of Genetic 
+    ##                            3                            1 
+    ##      Department of Geography     Department of Infectious 
+    ##                            2                            2 
+    ##    Department of Information       Department of Internal 
+    ##                            1                            6 
+    ##        Department of Medical       Department of Medicine 
+    ##                            3                           44 
+    ##   Department of Microbiology         Department of Native 
+    ##                            1                            2 
+    ##     Department of Nephrology      Department of Neurology 
+    ##                            5                            1 
+    ##      Department of Nutrition             Department of OB 
+    ##                            4                            5 
+    ##     Department of Obstetrics Department of Otolaryngology 
+    ##                            4                            4 
+    ##     Department of Pediatrics       Department of Physical 
+    ##                           13                            3 
+    ##     Department of Population     Department of Preventive 
+    ##                            1                            2 
+    ##     Department of Psychiatry     Department of Psychology 
+    ##                            4                            1 
+    ##   Department of Quantitative Department of Rehabilitation 
+    ##                            6                            1 
+    ##         Department of Social        Department of Surgery 
+    ##                            1                            6 
+    ##  Department of Translational       Department of Tropical 
+    ##                            1                            5 
+    ##           Department of Twin        Department of Urology 
+    ##                            2                            1 
+    ##       Department of Veterans           School of Medicine 
+    ##                            2                           87 
+    ##            School of Natural            School of Nursing 
+    ##                            1                            1 
+    ##             School of Public             School of Social 
+    ##                           20                            1
 
 ## Question 5: Form a database
 
